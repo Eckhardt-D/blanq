@@ -1,7 +1,7 @@
 export default defineAppConfig({
   appName: 'Blanq',
   copy: {
-    authPageTestimonial: 'This library has saved me countless hours of work and helped me deliver stunning designs to my clients faster than ever before.',
+    authPageTestimonial: 'Usually the hard part is just starting. Now that it is THIS easy - all focus can be on shipping the product. That is a super power.',
     landing: {
       heading: 'Batteries included Nuxt app starter',
       subHeading: 'Why set up auth, email, queues, payments etc. from scratch every time when you can just clone this repo?',

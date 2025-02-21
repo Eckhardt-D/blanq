@@ -39,8 +39,8 @@ const config = useAppConfig()
           </div>
         </nav>
       </div>
-
-      <slot />
     </div>
+
+    <slot />
   </main>
 </template>

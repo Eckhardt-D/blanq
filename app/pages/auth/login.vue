@@ -1,10 +1,16 @@
 <script lang="ts" setup>
 import { Icon } from '@iconify/vue'
 
+const config = useAppConfig()
+
 definePageMeta({
   layout: 'auth',
 })
-const config = useAppConfig()
+
+useSeoMeta({
+  title: `${config.appName} | Login`,
+  description: 'Login to your Blanq account',
+})
 </script>
 
 <template>
@@ -13,16 +19,16 @@ const config = useAppConfig()
       href="/auth/register"
       class="absolute right-4 top-4 md:right-8 md:top-8"
     >
-      Register
+      Create an account
     </NuxtLink>
 
     <div class="relative hidden h-full flex-col bg-muted p-10 text-white dark:border-r lg:flex">
       <div class="absolute inset-0 bg-zinc-900" />
 
-      <div class="relative z-20 flex items-center text-lg font-medium">
+      <NuxtLink class="relative z-20 gap-3 flex items-center text-lg font-medium" to="/">
         <Icon icon="radix-icons:crumpled-paper" />
         {{ config.appName }}
-      </div>
+      </NuxtLink>
 
       <div class="relative z-20 mt-auto">
         <AuthTestimonial />

@@ -21,6 +21,20 @@ async function onSubmit(event: Event) {
       <div class="grid gap-2">
         <div class="grid gap-1">
           <UiLabel for="email">
+            Full name
+          </UiLabel>
+
+          <UiInput
+            id="fullname"
+            placeholder="Your full name"
+            type="text"
+            auto-correct="off"
+            :disabled="isLoading"
+          />
+        </div>
+
+        <div class="grid gap-1">
+          <UiLabel for="email">
             Email
           </UiLabel>
 
