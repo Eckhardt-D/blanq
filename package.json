@@ -9,9 +9,11 @@
     "dev": "nuxt dev",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
-    "postinstall": "nuxt prepare"
+    "postinstall": "nuxt prepare",
+    "db:generate": "drizzle-kit generate"
   },
   "dependencies": {
+    "@nuxthub/core": "0.8.17",
     "@nuxtjs/color-mode": "3.5.2",
     "@nuxtjs/fontaine": "0.4.4",
     "@nuxtjs/google-fonts": "3.2.0",
@@ -20,9 +22,14 @@
     "@unovis/ts": "^1.5.1",
     "@unovis/vue": "^1.5.1",
     "@vee-validate/zod": "^4.15.0",
+    "@vitejs/plugin-vue": "^5.2.1",
+    "@vue-email/components": "^0.0.21",
+    "@vue-email/render": "^0.0.9",
+    "@vue-email/tailwind": "^0.2.0",
     "@vueuse/core": "^12.7.0",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "drizzle-orm": "^0.39.3",
     "embla-carousel-vue": "^8.5.2",
     "lucide-vue-next": "^0.475.0",
     "nuxt": "^3.15.4",
@@ -43,6 +50,8 @@
     "@antfu/eslint-config": "^4.3.0",
     "@iconify-json/radix-icons": "^1.2.2",
     "@iconify/vue": "^4.3.0",
-    "eslint": "^9.20.1"
+    "drizzle-kit": "^0.30.4",
+    "eslint": "^9.20.1",
+    "wrangler": "^3.109.2"
   }
 }

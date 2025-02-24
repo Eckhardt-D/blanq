@@ -1,3 +1,5 @@
+import vue from '@vitejs/plugin-vue'
+
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   compatibilityDate: '2024-11-01',
@@ -20,7 +22,11 @@ export default defineNuxtConfig({
     '@pinia/nuxt',
     '@nuxtjs/google-fonts',
     '@nuxtjs/fontaine',
+    '@nuxthub/core',
   ],
+  hub: {
+    database: true,
+  },
   colorMode: {
     storageKey: 'blanq-color-mode',
     classSuffix: '',
@@ -29,5 +35,15 @@ export default defineNuxtConfig({
     prefix: 'Ui',
     componentDir: './app/components/ui',
   },
+  runtimeConfig: {
+    mailChannelsBaseUrl: '',
+    mailChannelsApiKey: '',
+    mailSenderEmail: '',
+  },
+  nitro: {
+    rollupConfig: {
+      // @ts-expect-error type instantiation is excessively deep and possibly infinite.
+      plugins: [vue()],
+    },
+  },
 })
-
