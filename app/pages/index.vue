@@ -45,7 +45,7 @@ useSeoMeta({
         </div>
       </div>
 
-      <div class="mt-40">
+      <div id="features" class="mt-40">
         <h2 class="text-5xl font-bold tracking-tight">
           Features
         </h2>
@@ -75,7 +75,7 @@ useSeoMeta({
         </div>
       </div>
 
-      <div class="mt-40">
+      <div id="pricing" class="mt-40">
         <h2 class="text-5xl font-bold tracking-tight">
           Pricing
         </h2>

@@ -1,4 +1,7 @@
-import { integer } from 'drizzle-orm/sqlite-core'
+import { integer, text } from 'drizzle-orm/sqlite-core'
+import { uuidv7 } from 'uuidv7'
+
+export const uuid = text('id').primaryKey().$defaultFn(uuidv7)
 
 export const created_at = integer('created_at', { mode: 'timestamp_ms' })
   .$defaultFn(() => new Date())

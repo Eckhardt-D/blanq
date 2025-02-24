@@ -9,10 +9,11 @@ export default defineAppConfig({
   },
   navigation: {
     landing: [
-      { title: 'How to', to: '#' },
-      { title: 'Features', to: '#' },
-      { title: 'Documentation', to: '#' },
-      { title: 'Github', to: '#' },
+      { title: 'How to', to: '/how-to' },
+      { title: 'Features', to: '/#features' },
+      { title: 'Pricing', to: '/#pricing' },
+      { title: 'Documentation', to: '/documentation' },
+      { title: 'Github', to: 'https://github.com/Eckhardt-D/blanq', target: '_blank' },
     ],
   },
   products: [

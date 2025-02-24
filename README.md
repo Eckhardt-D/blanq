@@ -16,6 +16,16 @@ You have it out of the box, ready to be tweaked for your needs.
 
 # Development
 
+Ensure you've copied and filled the necessary env vars from `.env.example` to `.env`.
+
+Quick way to generate the better auth secret
+
+```bash
+node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
+```
+
+Most of the application boilerplate be easily updated via the `app/app.config.ts` file.
+
 ## Start the local mail server
 
 Please see [This Repo](https://github.com/eckhardt-d/mailchannels-dev) for more information on how to start a local mailbox and sender.
@@ -25,8 +35,6 @@ Alternatively you could always use your real MailChannels account API key and UR
 docker run -d -p 8008:8008 mailchannels-dev
 ```
 
-Be sure to update your .env before running the app. (check .env.example for info)
-
 ## Start the app
 
 This will automatically run the migrations for you if it's the first time you're running the app.
@@ -34,5 +42,3 @@ This will automatically run the migrations for you if it's the first time you're
 ```bash
 bun run dev
 ```
-
-

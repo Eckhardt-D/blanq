@@ -1,12 +1,8 @@
+import type { User } from '~~/server/database/schemas/users'
+
 export const useUserStore = defineStore('user', () => {
-  const user = ref<string | null>(null)
-
-  function setUser(newUser: string | null) {
-    user.value = newUser
-  }
-
+  const user = ref<User | null>(null)
   return {
     user,
-    setUser,
   }
 })

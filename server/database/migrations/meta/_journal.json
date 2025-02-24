@@ -1,0 +1,20 @@
+{
+  "version": "7",
+  "dialect": "sqlite",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "6",
+      "when": 1740406651451,
+      "tag": "0000_futuristic_devos",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "6",
+      "when": 1740407796457,
+      "tag": "0001_fantastic_magik",
+      "breakpoints": true
+    }
+  ]
+}

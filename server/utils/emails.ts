@@ -1,4 +1,3 @@
-import type { H3Event } from 'h3'
 import { render } from '@vue-email/render'
 import { z } from 'zod'
 import AccountConfirmationEmail from '../emails/AccountConfirmationEmail.vue'
@@ -14,13 +13,30 @@ const emailMessageSchema = z.object({
 
 export type EmailMessage = z.infer<typeof emailMessageSchema>
 
-export function useEmails(event: H3Event) {
+const sendAccountVerificationEmailSchema = z.object({
+  to: z.object({
+    name: z.string(),
+    email: z.string().email(),
+  }),
+  verificationUrl: z.string().url(),
+})
+
+type SendAccountVerificationEmailOptions = z.infer<typeof sendAccountVerificationEmailSchema>
+
+interface UseEmailsConfig {
+  mailChannelsBaseUrl: string
+  mailChannelsApiKey: string
+  mailSenderEmail: string
+  mailSenderName: string
+}
+
+export function useEmails(config: UseEmailsConfig) {
   const {
     mailChannelsBaseUrl,
     mailChannelsApiKey,
     mailSenderEmail,
     mailSenderName,
-  } = useRuntimeConfig(event)
+  } = config
 
   async function sendEmail(message: EmailMessage) {
     message = emailMessageSchema.parse(message)
@@ -62,13 +78,15 @@ export function useEmails(event: H3Event) {
   }
 
   // TODO: Implement this function for realzies
-  async function sendAccountVerificationEmail() {
+  async function sendAccountVerificationEmail(options: SendAccountVerificationEmailOptions) {
+    const params = sendAccountVerificationEmailSchema.parse(options)
+
     const emailMessage = await render(AccountConfirmationEmail, {
-      confirmationLink: 'http://localhost:3000/api/users/confirm?token=123',
+      confirmationLink: params.verificationUrl,
     })
 
     const message: EmailMessage = {
-      to: { name: 'Test User', email: 'test@test.test' },
+      to: params.to,
       subject: 'Verify Your Account',
       html: emailMessage,
     }

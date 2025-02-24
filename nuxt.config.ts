@@ -38,6 +38,7 @@ export default defineNuxtConfig({
   runtimeConfig: {
     mailChannelsBaseUrl: '',
     mailChannelsApiKey: '',
+    mailSenderName: '',
     mailSenderEmail: '',
   },
   nitro: {

@@ -1,17 +1,75 @@
 <script setup lang="ts">
+// TODO: Use ShadCN form stuff
+import { useToast } from '@/components/ui/toast'
 import { cn } from '@/lib/utils'
 import { Icon } from '@iconify/vue'
 import { ref } from 'vue'
+import { z } from 'zod'
+import { authClient } from '~~/lib/auth-client'
 
 const isLoading = ref(false)
+const { toast } = useToast()
 
+const registerSchema = z.object({
+  fullname: z.string().min(3),
+  email: z.string().email(),
+  password: z.string().min(8),
+  passwordConfirm: z.string().min(8),
+})
+
+const formState = reactive({
+  fullname: '',
+  email: '',
+  password: '',
+  passwordConfirm: '',
+})
+
+// TODO update to use shadcn form stuff with Zod
 async function onSubmit(event: Event) {
   event.preventDefault()
-  isLoading.value = true
 
-  setTimeout(() => {
-    isLoading.value = false
-  }, 3000)
+  if (isLoading.value)
+    return
+
+  if (formState.password !== formState.passwordConfirm) {
+    toast({
+      title: 'Password mismatch',
+      description: 'The passwords do not match. Please try again.',
+      variant: 'destructive',
+    })
+
+    return
+  }
+
+  const result = registerSchema.safeParse(formState)
+
+  if (!result.success) {
+    toast({
+      title: 'Invalid form',
+      description: 'Please fill in the form correctly.',
+      variant: 'destructive',
+    })
+
+    return
+  }
+
+  const response = await authClient.signUp.email({
+    name: result.data.fullname,
+    email: result.data.email,
+    password: result.data.password,
+  })
+
+  if (response.error) {
+    toast({
+      title: 'Error',
+      description: response.error.message,
+      variant: 'destructive',
+    })
+
+    // return
+  }
+
+  // TODO: Success State
 }
 </script>
 
@@ -26,6 +84,7 @@ async function onSubmit(event: Event) {
 
           <UiInput
             id="fullname"
+            v-model="formState.fullname"
             placeholder="Your full name"
             type="text"
             auto-correct="off"
@@ -40,6 +99,7 @@ async function onSubmit(event: Event) {
 
           <UiInput
             id="email"
+            v-model="formState.email"
             placeholder="name@example.com"
             type="email"
             auto-capitalize="none"
@@ -56,6 +116,7 @@ async function onSubmit(event: Event) {
 
           <UiInput
             id="password"
+            v-model="formState.password"
             placeholder="Password"
             type="password"
             :disabled="isLoading"
@@ -69,13 +130,14 @@ async function onSubmit(event: Event) {
 
           <UiInput
             id="password-confirm"
+            v-model="formState.passwordConfirm"
             placeholder="Confirm Password"
             type="password"
             :disabled="isLoading"
           />
         </div>
 
-        <UiButton :disabled="isLoading">
+        <UiButton :disabled="isLoading" type="submit">
           <Icon v-if="isLoading" icon="radix-icons:update" class="mr-2 h-4 w-4 animate-spin" />
           Create account
         </UiButton>

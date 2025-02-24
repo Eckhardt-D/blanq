@@ -16,7 +16,12 @@ const config = useAppConfig()
 
           <div>
             <ul class="flex items-center gap-10 font-medium text-sm">
-              <NuxtLink v-for="item in config.navigation.landing" :key="item.title" :to="item.to">
+              <NuxtLink
+                v-for="item in config.navigation.landing"
+                :key="item.title"
+                :to="item.to"
+                :target="item.target"
+              >
                 <li>
                   {{ item.title }}
                 </li>

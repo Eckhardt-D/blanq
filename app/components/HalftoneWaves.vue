@@ -1,11 +1,12 @@
 <script lang="ts" setup>
-const canvasRef = ref<HTMLCanvasElement | null>(null);
-const animationFrameId = ref<number | null>(null);
-const time = ref(0);
+const canvasRef = ref<HTMLCanvasElement | null>(null)
+const animationFrameId = ref<number | null>(null)
+const time = ref(0)
 
 onMounted(() => {
-  const ctx = canvasRef.value?.getContext('2d');
-  if (!ctx) return;
+  const ctx = canvasRef.value?.getContext('2d')
+  if (!ctx)
+    return
 
   const canvas = canvasRef.value!
   canvas.width = 2400
@@ -21,15 +22,15 @@ onMounted(() => {
         const centerX = x * gridSize
         const centerY = y * gridSize
         const distanceFromCenter = Math.sqrt(
-          Math.pow(centerX - canvas.width / 2, 2) + 
-          Math.pow(centerY - canvas.height / 2, 2)
+          (centerX - canvas.width / 2) ** 2
+          + (centerY - canvas.height / 2) ** 2,
         )
         const maxDistance = Math.sqrt(
-          Math.pow(canvas.width / 2, 2) + 
-          Math.pow(canvas.height / 2, 2)
+          (canvas.width / 2) ** 2
+          + (canvas.height / 2) ** 2,
         )
         const normalizedDistance = distanceFromCenter / maxDistance
-        
+
         const waveOffset = Math.sin(normalizedDistance * 10 - time.value) * 0.5 + 0.5
         const size = gridSize * waveOffset * 0.8
 
@@ -52,13 +53,13 @@ onMounted(() => {
   }
 
   animate()
-});
+})
 
 onBeforeUnmount(() => {
   if (animationFrameId.value) {
     cancelAnimationFrame(animationFrameId.value)
   }
-});
+})
 </script>
 
 <template>
