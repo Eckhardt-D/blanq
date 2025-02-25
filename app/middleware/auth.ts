@@ -1,6 +1,6 @@
 import { authClient } from '~~/lib/auth-client'
 
-export default defineNuxtRouteMiddleware(async () => {
+export default defineNuxtRouteMiddleware(async (to) => {
   const { data: session } = await authClient.useSession(useFetch)
 
   if (!session?.value?.user) {
@@ -8,4 +8,10 @@ export default defineNuxtRouteMiddleware(async () => {
   }
 
   useUserStore().setUser(session.value.user)
+
+  if (!session.value.user.emailVerified) {
+    if (!to.path.startsWith('/auth/verify-email')) {
+      return navigateTo('/auth/verify-email')
+    }
+  }
 })

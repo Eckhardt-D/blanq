@@ -6,9 +6,8 @@ let _auth: ReturnType<typeof betterAuth>
 export function serverAuth() {
   if (!_auth) {
     _auth = betterAuth({
-      emailAndPassword: { requireEmailVerification: true, enabled: true },
+      emailAndPassword: { enabled: true },
       emailVerification: {
-        sendOnSignUp: true,
         autoSignInAfterVerification: true,
         async sendVerificationEmail({ user, url }, request) {
           if (request === undefined) {

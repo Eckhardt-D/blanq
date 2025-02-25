@@ -27,7 +27,8 @@ const onSubmit = form.handleSubmit(async (details) => {
   isLoading.value = true
 
   try {
-    /* const user = */await userStore.register(details)
+    // Causes a redirect if successful, subsequent code will not run reliably
+    await userStore.register(details)
   }
 
   catch (err) {

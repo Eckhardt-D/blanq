@@ -1,58 +1,90 @@
 <script setup lang="ts">
+import { useToast } from '@/components/ui/toast/use-toast'
 import { cn } from '@/lib/utils'
 import { Icon } from '@iconify/vue'
+import { toTypedSchema } from '@vee-validate/zod'
+import { useForm } from 'vee-validate'
 import { ref } from 'vue'
+import { z } from 'zod'
+import FormFieldBase from './FormFieldBase.vue'
 
+const userStore = useUserStore()
+const { toast } = useToast()
 const isLoading = ref(false)
 
-async function onSubmit(event: Event) {
-  event.preventDefault()
+const formSchema = toTypedSchema(z.object({
+  email: z.string().email(),
+  password: z.string().min(8),
+}))
+
+const form = useForm({
+  validationSchema: formSchema,
+})
+
+const onSubmit = form.handleSubmit(async (details) => {
   isLoading.value = true
 
-  setTimeout(() => {
+  try {
+    // Causes a redirect if successful, subsequent code will not run reliably
+    await userStore.login(details)
+  }
+
+  catch (err) {
+    toast({
+      title: 'An unexpected error occurred',
+      description: (err as Error).message,
+      variant: 'destructive',
+    })
+  }
+
+  finally {
     isLoading.value = false
-  }, 3000)
-}
+  }
+})
 </script>
 
 <template>
   <div :class="cn('grid gap-6', $attrs.class ?? '')">
     <form @submit="onSubmit">
-      <div class="grid gap-2">
-        <div class="grid gap-1">
-          <UiLabel for="email">
-            Email
-          </UiLabel>
+      <FormFieldBase
+        v-slot="{ componentField }"
+        name="email"
+        label="Email Address"
+      >
+        <UiInput
+          id="email"
+          v-bind="componentField"
+          placeholder="name@example.com"
+          type="email"
+          auto-capitalize="none"
+          auto-complete="email"
+          auto-correct="off"
+          :disabled="isLoading"
+        />
+      </FormFieldBase>
 
-          <UiInput
-            id="email"
-            placeholder="Email Address"
-            type="email"
-            auto-capitalize="none"
-            auto-complete="email"
-            auto-correct="off"
-            :disabled="isLoading"
-          />
-        </div>
+      <FormFieldBase
+        v-slot="{ componentField }"
+        name="password"
+        label="Password"
+      >
+        <UiInput
+          id="password"
+          v-bind="componentField"
+          placeholder="Password"
+          type="password"
+          :disabled="isLoading"
+        />
+      </FormFieldBase>
 
-        <div class="grid gap-1">
-          <UiLabel for="password">
-            Password
-          </UiLabel>
-
-          <UiInput
-            id="password"
-            placeholder="Password"
-            type="password"
-            :disabled="isLoading"
-          />
-        </div>
-
-        <UiButton :disabled="isLoading">
-          <Icon v-if="isLoading" icon="radix-icons:update" class="mr-2 h-4 w-4 animate-spin" />
-          Login with email
-        </UiButton>
-      </div>
+      <UiButton class="mt-3 w-full" type="submit" :disabled="isLoading">
+        <Icon
+          v-if="isLoading"
+          icon="radix-icons:update"
+          class="mr-2 h-4 w-4 animate-spin"
+        />
+        Login
+      </UiButton>
     </form>
   </div>
 </template>

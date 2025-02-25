@@ -2,6 +2,11 @@ import type { User } from '~~/server/database/schemas/users'
 import { useToast } from '@/components/ui/toast/use-toast'
 import { authClient } from '~~/lib/auth-client'
 
+interface LoginPayload {
+  email: string
+  password: string
+}
+
 interface RegisterPayload {
   fullname: string
   email: string
@@ -15,6 +20,25 @@ export const useUserStore = defineStore('user', () => {
 
   function setUser(newUser: User) {
     user.value = newUser
+  }
+
+  async function login(payload: LoginPayload) {
+    const response = await authClient.signIn.email({
+      email: payload.email,
+      password: payload.password,
+    })
+
+    if (response.error != null) {
+      toast({
+        title: 'Error signing in',
+        description: 'Please check your email and password and try again.',
+        duration: 4000,
+        variant: 'destructive',
+      })
+      return null
+    }
+
+    return navigateTo('/app')
   }
 
   async function register(payload: RegisterPayload) {
@@ -42,7 +66,18 @@ export const useUserStore = defineStore('user', () => {
       variant: 'default',
     })
 
-    return (user.value = response.data.user)
+    return navigateTo('/app')
+  }
+
+  async function sendVerificationEmail() {
+    if (!user.value) {
+      throw new Error('Invalid session, could not send verification email.')
+    }
+
+    await authClient.sendVerificationEmail({
+      email: user.value.email,
+      callbackURL: '/app',
+    })
   }
 
   async function logout() {
@@ -54,7 +89,9 @@ export const useUserStore = defineStore('user', () => {
   return {
     user,
     setUser,
+    login,
     register,
+    sendVerificationEmail,
     logout,
   }
 })
