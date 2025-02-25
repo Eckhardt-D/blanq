@@ -15,4 +15,6 @@ export const users = sqliteTable('users', {
   index('users_created_non_deleted_idx').on(table.createdAt).where(isNull(table.deletedAt)),
 ])
 
-export type User = typeof users.$inferSelect
+export type User = Omit<typeof users.$inferSelect, 'deletedAt' | 'image'> & {
+  image?: string | null | undefined
+}

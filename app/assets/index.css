@@ -4,6 +4,7 @@
 
 @layer base {
   :root {
+    --navbar-size: 64px;
     --font-family: 'Geist', sans-serif;
     --background: 0 0% 100%;
     --foreground: 240 10% 3.9%;
