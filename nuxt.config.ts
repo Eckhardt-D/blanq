@@ -36,6 +36,11 @@ export default defineNuxtConfig({
     prefix: 'Ui',
     componentDir: './app/components/ui',
   },
+  routeRules: {
+    '/app/settings': {
+      redirect: '/app/settings/account',
+    },
+  },
   runtimeConfig: {
     mailChannelsBaseUrl: '',
     mailChannelsApiKey: '',
