@@ -11,7 +11,7 @@ const userStore = useUserStore()
       </h3>
     </div>
     <div class="flex gap-2">
-      <UiButton v-if="userStore.user" class="text-destructive" variant="link" @click="userStore.logout">
+      <UiButton v-if="userStore.user" class="text-destructive dark:text-red-500" variant="link" @click="userStore.logout">
         Logout
       </UiButton>
 

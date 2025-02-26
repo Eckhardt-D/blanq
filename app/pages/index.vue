@@ -40,7 +40,7 @@ useSeoMeta({
             <HalftoneWaves />
           </div>
 
-          <div class="absolute bottom-0 -left-2 -right-2 bg-gradient-to-b from-transparent to-[#f4f4f4] h-14" />
+          <div class="absolute bottom-0 -left-2 -right-2 bg-gradient-to-b from-transparent to-[#f4f4f4] dark:to-background h-14" />
         </div>
       </div>
 
@@ -55,7 +55,7 @@ useSeoMeta({
           <div
             v-for="feature in config.features"
             :key="feature.title"
-            class="bg-white border rounded-md shadow space-y-4 p-4"
+            class="bg-white dark:bg-background border rounded-md shadow space-y-4 p-4"
           >
             <div class="flex gap-2 items-center">
               <Icon :icon="feature.icon" />

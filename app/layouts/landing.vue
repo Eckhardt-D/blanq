@@ -7,10 +7,10 @@ const session = authClient.useSession()
 </script>
 
 <template>
-  <main class="bg-[#f4f4f4] min-h-dvh">
+  <main class="bg-[#f4f4f4] dark:bg-background min-h-dvh">
     <div class="container">
       <div class="py-5">
-        <nav class="flex items-center justify-between border rounded-lg bg-white p-3">
+        <nav class="flex items-center justify-between border rounded-lg bg-white dark:bg-background p-3">
           <NuxtLink class="flex items-center gap-2" to="/">
             <Icon icon="radix-icons:crumpled-paper" class="w-6 h-6" />
             <span class="font-bold text-xl">{{ config.appName }}</span>
@@ -43,6 +43,8 @@ const session = authClient.useSession()
                 Get Started
               </NuxtLink>
             </UiButton>
+
+            <AppThemeSelector />
           </div>
 
           <div v-else class="flex items-center gap-3">
@@ -51,6 +53,8 @@ const session = authClient.useSession()
                 Dashboard
               </NuxtLink>
             </UiButton>
+
+            <AppThemeSelector />
           </div>
         </nav>
       </div>
