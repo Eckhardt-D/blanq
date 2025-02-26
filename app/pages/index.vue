@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-// import Autoplay from 'embla-carousel-vue'
 import { Icon } from '@iconify/vue'
 
 const config = useAppConfig()
@@ -9,8 +8,8 @@ definePageMeta({
 })
 
 useSeoMeta({
-  title: `${config.appName} - Free and Open-Source Nuxt Starter Kit`,
-  description: 'Blanq is a batteries included Nuxt starter kit, with opinionated defaults that helps you get started quicker. Clone it now, for free.',
+  title: config.seo.home.title,
+  description: config.seo.home.description,
 })
 </script>
 

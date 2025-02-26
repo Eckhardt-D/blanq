@@ -1,5 +1,13 @@
+const appName = 'Blanq'
+
 export default defineAppConfig({
-  appName: 'Blanq',
+  appName,
+  seo: {
+    home: {
+      title: `${appName} - Free and Open-Source Nuxt Starter Kit`,
+      description: 'Blanq is a batteries included Nuxt starter kit, with opinionated defaults that helps you get started quicker. Clone it now, for free.',
+    },
+  },
   copy: {
     authPageTestimonial: 'Usually the hard part is just starting. Now that it is THIS easy - all focus can be on shipping the product. That is a super power.',
     landing: {

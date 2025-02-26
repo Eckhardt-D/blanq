@@ -15,6 +15,13 @@
       "when": 1740407796457,
       "tag": "0001_fantastic_magik",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "6",
+      "when": 1740539411358,
+      "tag": "0002_exotic_magneto",
+      "breakpoints": true
     }
   ]
 }

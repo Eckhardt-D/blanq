@@ -14,6 +14,12 @@ interface RegisterPayload {
   passwordConfirm: string
 }
 
+interface ResetPasswordPayload {
+  token: string
+  password: string
+  passwordConfirm: string
+}
+
 export const useUserStore = defineStore('user', () => {
   const user = ref<User | null>(null)
   const { toast } = useToast()
@@ -80,6 +86,23 @@ export const useUserStore = defineStore('user', () => {
     })
   }
 
+  async function sendPasswordResetEmail(email: string) {
+    await authClient.forgetPassword({ email, redirectTo: '/auth/reset-password' })
+  }
+
+  async function resetPassword(payload: ResetPasswordPayload) {
+    if (payload.password !== payload.passwordConfirm) {
+      throw new Error('Passwords do not match.')
+    }
+
+    await authClient.resetPassword({
+      token: payload.token,
+      newPassword: payload.password,
+    })
+
+    return true
+  }
+
   async function logout() {
     await authClient.signOut()
     user.value = null
@@ -92,6 +115,8 @@ export const useUserStore = defineStore('user', () => {
     login,
     register,
     sendVerificationEmail,
+    sendPasswordResetEmail,
+    resetPassword,
     logout,
   }
 })

@@ -26,6 +26,7 @@ export default defineNuxtConfig({
   ],
   hub: {
     database: true,
+    kv: true,
   },
   colorMode: {
     storageKey: 'blanq-color-mode',

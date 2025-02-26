@@ -1,6 +1,7 @@
 import { render } from '@vue-email/render'
 import { z } from 'zod'
 import AccountConfirmationEmail from '../emails/AccountConfirmationEmail.vue'
+import PasswordResetEmail from '../emails/PasswordResetEmail.vue'
 
 const emailMessageSchema = z.object({
   to: z.object({
@@ -22,6 +23,16 @@ const sendAccountVerificationEmailSchema = z.object({
 })
 
 type SendAccountVerificationEmailOptions = z.infer<typeof sendAccountVerificationEmailSchema>
+
+const sendPasswordResetEmailSchema = z.object({
+  to: z.object({
+    name: z.string(),
+    email: z.string().email(),
+  }),
+  resetUrl: z.string().url(),
+})
+
+type SendPasswordResetEmailOptions = z.infer<typeof sendPasswordResetEmailSchema>
 
 interface UseEmailsConfig {
   mailChannelsBaseUrl: string
@@ -94,7 +105,24 @@ export function useEmails(config: UseEmailsConfig) {
     return sendEmail(message)
   }
 
+  async function sendPasswordResetEmail(options: SendPasswordResetEmailOptions) {
+    const params = sendPasswordResetEmailSchema.parse(options)
+
+    const emailMessage = await render(PasswordResetEmail, {
+      resetUrl: params.resetUrl,
+    })
+
+    const message: EmailMessage = {
+      to: params.to,
+      subject: 'Reset Your Password',
+      html: emailMessage,
+    }
+
+    return sendEmail(message)
+  }
+
   return {
     sendAccountVerificationEmail,
+    sendPasswordResetEmail,
   }
 }
