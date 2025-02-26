@@ -1,7 +1,9 @@
 <script lang="ts" setup>
 import { Icon } from '@iconify/vue'
+import { authClient } from '~~/lib/auth-client'
 
 const config = useAppConfig()
+const session = authClient.useSession()
 </script>
 
 <template>
@@ -9,10 +11,10 @@ const config = useAppConfig()
     <div class="container">
       <div class="py-5">
         <nav class="flex items-center justify-between border rounded-lg bg-white p-3">
-          <div class="flex items-center gap-2">
+          <NuxtLink class="flex items-center gap-2" to="/">
             <Icon icon="radix-icons:crumpled-paper" class="w-6 h-6" />
             <span class="font-bold text-xl">{{ config.appName }}</span>
-          </div>
+          </NuxtLink>
 
           <div>
             <ul class="flex items-center gap-10 font-medium text-sm">
@@ -29,7 +31,7 @@ const config = useAppConfig()
             </ul>
           </div>
 
-          <div class="flex items-center gap-3">
+          <div v-if="!session.data" class="flex items-center gap-3">
             <UiButton as-child variant="ghost">
               <NuxtLink to="/auth/login">
                 Sign in
@@ -39,6 +41,14 @@ const config = useAppConfig()
             <UiButton as-child>
               <NuxtLink to="/auth/register">
                 Get Started
+              </NuxtLink>
+            </UiButton>
+          </div>
+
+          <div v-else class="flex items-center gap-3">
+            <UiButton as-child>
+              <NuxtLink to="/app">
+                Dashboard
               </NuxtLink>
             </UiButton>
           </div>
