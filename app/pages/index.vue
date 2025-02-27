@@ -80,41 +80,15 @@ useSeoMeta({
         </h2>
 
         <div class="grid grid-cols-1 md:grid-cols-3 gap-2 mt-10">
-          <UiCard v-for="product in config.products" :key="product.title">
-            <UiCardHeader>
-              <UiCardTitle>
-                {{ product.title }}
-              </UiCardTitle>
-
-              <h3 class="my-2">
-                {{ `$${product.price}${product.type === 'subscription' ? '/month' : ''}` }}
-              </h3>
-
-              <UiCardDescription>
-                {{ product.description }}
-              </UiCardDescription>
-            </UiCardHeader>
-
-            <UiCardContent>
-              <ul class="space-y-2">
-                <li v-for="feature in product.features" :key="feature" class="flex items-center gap-2">
-                  <Icon icon="radix-icons:check" class="w-6 h-6 text-green-500" />
-
-                  <span>
-                    {{ feature }}
-                  </span>
-                </li>
-              </ul>
-            </UiCardContent>
-
-            <UiCardFooter>
-              <UiButton as-child>
-                <NuxtLink to="/auth/register">
-                  {{ product.action }}
-                </NuxtLink>
-              </UiButton>
-            </UiCardFooter>
-          </UiCard>
+          <ProductCard
+            v-for="product in config.products"
+            :key="product.title"
+            :product="{
+              ...product,
+              actionUrl: '/app/settings/billing',
+              actionText: product.action,
+            }"
+          />
         </div>
       </div>
 
