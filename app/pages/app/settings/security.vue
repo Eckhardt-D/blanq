@@ -17,6 +17,16 @@ definePageMeta({
 
     <UiSeparator class="mt-3 mb-5" />
 
-    TODO
+    <h3 class="font-medium mb-3">
+      Update your password
+    </h3>
+
+    <SettingsFormSecurity />
+
+    <h3 class="font-medium mt-10 mb-3">
+      Setup Two-Factor Authentication
+    </h3>
+
+    <UiBadge>Coming Soon</UiBadge>
   </div>
 </template>

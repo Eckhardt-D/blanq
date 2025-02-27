@@ -23,8 +23,8 @@ const navigation = [
 </script>
 
 <template>
-  <main class="h-dvh flex flex-col">
-    <AppNavigation class="!px-10" />
+  <main class="flex flex-col">
+    <AppNavigation class="!px-10 shrink-0" />
 
     <div class="px-10 mt-5">
       <UiBreadcrumb>

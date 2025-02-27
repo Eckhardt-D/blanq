@@ -25,6 +25,12 @@ interface UpdateProfilePayload {
   email?: string
 }
 
+interface ChangePasswordPayload {
+  currentPassword: string
+  newPassword: string
+  newPasswordConfirm: string
+}
+
 export const useUserStore = defineStore('user', () => {
   const user = ref<User | null>(null)
   const { toast } = useToast()
@@ -170,6 +176,34 @@ export const useUserStore = defineStore('user', () => {
     }
   }
 
+  async function changePassword(payload: ChangePasswordPayload) {
+    if (payload.newPassword !== payload.newPasswordConfirm) {
+      throw new Error('Passwords do not match.')
+    }
+
+    const response = await authClient.changePassword({
+      currentPassword: payload.currentPassword,
+      newPassword: payload.newPassword,
+      revokeOtherSessions: true,
+    })
+
+    if (response.error !== null) {
+      toast({
+        title: 'Error updating password',
+        description: 'Please try again.',
+        duration: 4000,
+        variant: 'destructive',
+      })
+    }
+    else {
+      toast({
+        title: 'Password successfully updated',
+        duration: 4000,
+        variant: 'default',
+      })
+    }
+  }
+
   async function logout() {
     await authClient.signOut()
     user.value = null
@@ -185,6 +219,7 @@ export const useUserStore = defineStore('user', () => {
     sendPasswordResetEmail,
     resetPassword,
     updateProfile,
+    changePassword,
     logout,
   }
 })
