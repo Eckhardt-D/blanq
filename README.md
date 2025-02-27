@@ -1,4 +1,4 @@
-# Blanq - The Nuxt Nuxt Starter
+# Blanq - The Nuxt (Hub) Starter
 
 Blanq is a project to get a Nuxt app up and running as quick as possible. The project uses an opinionated list of packages, configurations, vendors and services.
 The idea is to be able just to replace some items in the `app.config.ts` and have the basis for your app set up.
@@ -15,6 +15,16 @@ Instead of having to always rewrite stuff like:
 You have it out of the box, ready to be tweaked for your needs.
 
 # Development
+
+First install all the dependencies
+
+```bash
+bun install
+```
+
+> [!NOTE]
+> Currently some issues with native deps and cross-platform installs.
+> Remove `bun.lock` and node_modules and try again if you run into issues.
 
 Ensure you've copied and filled the necessary env vars from `.env.example` to `.env`.
 
