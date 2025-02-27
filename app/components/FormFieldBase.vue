@@ -19,7 +19,10 @@ defineProps<{
         <slot :component-field />
       </UiFormControl>
 
-      <UiFormDescription />
+      <slot name="description">
+        <UiFormDescription />
+      </slot>
+
       <UiFormMessage />
     </UiFormItem>
   </UiFormField>

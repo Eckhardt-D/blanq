@@ -6,6 +6,30 @@ let _auth: ReturnType<typeof betterAuth>
 export function serverAuth() {
   if (!_auth) {
     _auth = betterAuth({
+      user: {
+        changeEmail: {
+          enabled: true,
+          sendChangeEmailVerification: async ({ user, newEmail, url }, request) => {
+            if (request === undefined) {
+              throw new Error('Request is undefined, cannot send email')
+            }
+
+            // This is the request as it is passed from `api/[...auth].ts` which is where
+            // it is 'enhanced' with the runtimeConfig. Not a perfect solution.
+            const enhanced: EnhancedRequest = request
+            const emails = useEmails(enhanced.__config!)
+
+            await emails.sendEmailChangeEmail({
+              newEmail,
+              resetUrl: url,
+              to: {
+                name: user.name,
+                email: user.email,
+              },
+            })
+          },
+        },
+      },
       emailAndPassword: {
         enabled: true,
         async sendResetPassword({ user, url }, request) {

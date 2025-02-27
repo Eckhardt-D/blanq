@@ -20,6 +20,11 @@ interface ResetPasswordPayload {
   passwordConfirm: string
 }
 
+interface UpdateProfilePayload {
+  name?: string
+  email?: string
+}
+
 export const useUserStore = defineStore('user', () => {
   const user = ref<User | null>(null)
   const { toast } = useToast()
@@ -72,7 +77,7 @@ export const useUserStore = defineStore('user', () => {
       variant: 'default',
     })
 
-    return navigateTo('/app')
+    return navigateTo('/auth/verify-email?new=true')
   }
 
   async function sendVerificationEmail() {
@@ -103,6 +108,68 @@ export const useUserStore = defineStore('user', () => {
     return true
   }
 
+  async function updateProfile(data: UpdateProfilePayload) {
+    if (!(data.email || data.name)) {
+      return
+    }
+
+    if (!user.value) {
+      return
+    }
+
+    const original = user.value
+
+    if (data.name && data.name !== original?.name) {
+      const nameUpdateResponse = await authClient.updateUser({
+        name: data.name,
+      })
+
+      if (nameUpdateResponse.error !== null) {
+        toast({
+          title: 'Error updating name',
+          description: 'Please try again.',
+          duration: 4000,
+          variant: 'destructive',
+        })
+      }
+      else {
+        toast({
+          title: 'Name successfully updated',
+          duration: 4000,
+          variant: 'default',
+        })
+
+        user.value.name = data.name
+      }
+    }
+
+    if (data.email && data.email !== original?.email) {
+      const emailUpdateResponse = await authClient.changeEmail({
+        newEmail: data.email,
+        callbackURL: '/app',
+      })
+
+      if (emailUpdateResponse.error !== null) {
+        toast({
+          title: 'Error updating email',
+          description: 'This email may already exist or it is invalid',
+          duration: 4000,
+          variant: 'destructive',
+        })
+      }
+      else {
+        toast({
+          title: 'Email successfully updated',
+          description: 'Please check your email to verify your new address.',
+          duration: 4000,
+          variant: 'default',
+        })
+
+        user.value.email = data.email
+      }
+    }
+  }
+
   async function logout() {
     await authClient.signOut()
     user.value = null
@@ -117,6 +184,7 @@ export const useUserStore = defineStore('user', () => {
     sendVerificationEmail,
     sendPasswordResetEmail,
     resetPassword,
+    updateProfile,
     logout,
   }
 })

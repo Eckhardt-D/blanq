@@ -1,6 +1,7 @@
 import { render } from '@vue-email/render'
 import { z } from 'zod'
 import AccountConfirmationEmail from '../emails/AccountConfirmationEmail.vue'
+import EmailChangeEmail from '../emails/ChangeEmailEmail.vue'
 import PasswordResetEmail from '../emails/PasswordResetEmail.vue'
 
 const emailMessageSchema = z.object({
@@ -33,6 +34,12 @@ const sendPasswordResetEmailSchema = z.object({
 })
 
 type SendPasswordResetEmailOptions = z.infer<typeof sendPasswordResetEmailSchema>
+
+const sendEmailChangeEmailSchema = sendPasswordResetEmailSchema.extend({
+  newEmail: z.string().email(),
+})
+
+type SendEmailChangeEmailOptions = z.infer<typeof sendEmailChangeEmailSchema>
 
 interface UseEmailsConfig {
   mailChannelsBaseUrl: string
@@ -121,8 +128,26 @@ export function useEmails(config: UseEmailsConfig) {
     return sendEmail(message)
   }
 
+  async function sendEmailChangeEmail(options: SendEmailChangeEmailOptions) {
+    const params = sendEmailChangeEmailSchema.parse(options)
+
+    const emailMessage = await render(EmailChangeEmail, {
+      resetUrl: params.resetUrl,
+      newEmail: params.newEmail,
+    })
+
+    const message: EmailMessage = {
+      to: params.to,
+      subject: 'Verify your email change',
+      html: emailMessage,
+    }
+
+    return sendEmail(message)
+  }
+
   return {
     sendAccountVerificationEmail,
     sendPasswordResetEmail,
+    sendEmailChangeEmail,
   }
 }

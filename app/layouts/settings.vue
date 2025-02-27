@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-import { UiBreadcrumb, UiBreadcrumbSeparator, UiSeparator } from '#components'
 import { cn } from '@/lib/utils'
 
 const route = useRoute()
@@ -31,8 +30,10 @@ const navigation = [
       <UiBreadcrumb>
         <UiBreadcrumbList>
           <UiBreadcrumbItem>
-            <UiBreadcrumbLink href="/app">
-              Dashboard
+            <UiBreadcrumbLink as-child>
+              <NuxtLink to="/app">
+                Dashboard
+              </NuxtLink>
             </UiBreadcrumbLink>
           </UiBreadcrumbItem>
 
@@ -58,15 +59,16 @@ const navigation = [
             <UiButton
               v-for="item in navigation"
               :key="item.href"
-              as="a"
-              :href="item.href"
               variant="ghost"
               :class="cn(
                 'w-full text-left justify-start',
                 route.path === item.href && 'bg-muted hover:bg-muted',
               )"
+              as-child
             >
-              {{ item.title }}
+              <NuxtLink :to="item.href">
+                {{ item.title }}
+              </NuxtLink>
             </UiButton>
           </nav>
         </aside>
