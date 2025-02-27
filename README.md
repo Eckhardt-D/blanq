@@ -16,7 +16,19 @@ You have it out of the box, ready to be tweaked for your needs.
 
 # Development
 
-First install all the dependencies
+Clone the repo into your project folder (./my-app)
+
+```bash
+git clone --depth=1 git@github.com:Eckhardt-D/blanq.git ./my-app
+```
+
+Change the remote origin to your own repo
+
+```bash
+cd ./my-app && git remote set-url origin <your-repo-url>
+```
+
+Install all the dependencies
 
 ```bash
 bun install
@@ -34,7 +46,14 @@ Quick way to generate the better auth secret
 node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
 ```
 
-Most of the application boilerplate be easily updated via the `app/app.config.ts` file.
+Most of the application boilerplate be easily updated via the `app/app.config.ts` file. Some things are hard coded though.
+
+The application shell lives in `app/pages/app/index.vue` that is where you can implement the page you want to show after the user logs in.
+All pages that show this layout should be placed in the `app/pages/app` folder and use the `dashboard` layout and `auth` middleware.
+Pre-built settings pages live under `app/pages/app/settings` and use the `settings` layout and `auth` middleware.
+
+
+Read the documentation and blog for more info on how to make changes and add your own features.
 
 ## Start the local mail server
 
