@@ -39,7 +39,7 @@ export const useUserStore = defineStore('user', () => {
     user.value = newUser
   }
 
-  async function login(payload: LoginPayload) {
+  async function login(payload: LoginPayload, opts?: { next?: string }) {
     const response = await authClient.signIn.email({
       email: payload.email,
       password: payload.password,
@@ -55,7 +55,7 @@ export const useUserStore = defineStore('user', () => {
       return null
     }
 
-    return navigateTo('/app')
+    return navigateTo(opts?.next ?? '/app')
   }
 
   async function register(payload: RegisterPayload) {

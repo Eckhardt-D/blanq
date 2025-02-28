@@ -22,6 +22,13 @@
       "when": 1740539411358,
       "tag": "0002_exotic_magneto",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "6",
+      "when": 1740716923026,
+      "tag": "0003_smiling_aqueduct",
+      "breakpoints": true
     }
   ]
 }

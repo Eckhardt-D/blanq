@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 const config = useAppConfig()
+const route = useRoute()
 
 definePageMeta({
   layout: 'auth',
@@ -18,7 +19,7 @@ useSeoMeta({
     form-title="Login to your account"
     form-description="Enter your email and password below to get started."
   >
-    <AuthFormLogin />
+    <AuthFormLogin :next="(route.query.next as string | undefined)" />
 
     <div class="my-2 text-center">
       <NuxtLink to="/auth/forgot-password" class="text-sm text-muted-foreground hover:text-primary">

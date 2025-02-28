@@ -3,6 +3,11 @@ definePageMeta({
   layout: 'settings',
   middleware: 'auth',
 })
+
+useSeoMeta({
+  title: 'Settings | Account',
+  description: 'Update your name or email address',
+})
 </script>
 
 <template>

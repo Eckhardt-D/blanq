@@ -26,6 +26,7 @@ export default defineNuxtConfig({
   ],
   hub: {
     database: true,
+    cache: true,
     kv: true,
   },
   colorMode: {
@@ -46,6 +47,11 @@ export default defineNuxtConfig({
     mailChannelsApiKey: '',
     mailSenderName: '',
     mailSenderEmail: '',
+    stripeSecretKey: '',
+    stripeWebhookSecret: '',
+    public: {
+      siteUrl: '',
+    },
   },
   nitro: {
     rollupConfig: {

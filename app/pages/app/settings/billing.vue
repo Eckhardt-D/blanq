@@ -1,10 +1,39 @@
 <script lang="ts" setup>
+import { Icon } from '@iconify/vue'
+
 definePageMeta({
   layout: 'settings',
   middleware: 'auth',
 })
 
+useSeoMeta({
+  title: 'Settings | Billing',
+  description: 'Update your billing information or view invoices',
+})
+
 const config = useAppConfig()
+const loadingPortal = ref(false)
+const userStore = useUserStore()
+
+const { data: subscriptions, refresh } = await useAsyncData('subscriptions', async () => {
+  return $fetch('/api/billing/subscriptions')
+})
+
+const localSubscriptionItems = config.products.map(p => p.priceId)
+const activeSubscriptions = computed(() => subscriptions.value?.filter(s => localSubscriptionItems.includes(s)) ?? [])
+
+onMounted(() => {
+  // Weird bug where the subscriptions endpoint returns
+  // undefined when navigating back from the portal/checkout page
+  if (subscriptions.value === undefined) {
+    refresh()
+  }
+})
+
+function openPortal() {
+  loadingPortal.value = true
+  window.location.href = '/api/billing/portal'
+}
 </script>
 
 <template>
@@ -31,9 +60,10 @@ const config = useAppConfig()
       <ProductCard
         v-for="product in config.products"
         :key="product.title"
+        :active="!!product.priceId && activeSubscriptions.includes(product.priceId)"
         :product="{
           ...product,
-          actionUrl: `/api/billing/checkout?priceId=${product.priceId}`,
+          actionUrl: product.priceId ? `/api/billing/checkout?priceId=${product.priceId}&type=${product.type}` : null,
           actionText: product.action,
         }"
       />
@@ -42,14 +72,19 @@ const config = useAppConfig()
     <UiSeparator class="my-5" />
 
     <h3 class="font-medium">
-      Transaction history
+      Manage your billing
     </h3>
 
     <p class="text-muted-foreground text-sm">
-      Manage your billing with Stripe Portal
+      Change your payment method, cancel plans or view invoices.
     </p>
 
-    <UiButton class="mt-3">
+    <UiButton class="mt-3" :disabled="loadingPortal || !userStore.user?.stripeCustomerId" @click="openPortal">
+      <Icon
+        v-if="loadingPortal"
+        icon="radix-icons:update"
+        class="mr-2 h-4 w-4 animate-spin"
+      />
       Open Portal
     </UiButton>
   </div>

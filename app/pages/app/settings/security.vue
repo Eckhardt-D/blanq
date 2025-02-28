@@ -3,6 +3,11 @@ definePageMeta({
   layout: 'settings',
   middleware: 'auth',
 })
+
+useSeoMeta({
+  title: 'Settings | Security',
+  description: 'Update your account password and 2FA settings',
+})
 </script>
 
 <template>

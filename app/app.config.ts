@@ -27,7 +27,7 @@ export default defineAppConfig({
   products: [
     {
       type: 'subscription' as const,
-      priceId: 'price_1234',
+      priceId: undefined,
       title: 'Free',
       price: 0,
       description: 'Never pay a penny if you do not want to. However, you can support the project by using the real Stripe integration.',
@@ -39,8 +39,8 @@ export default defineAppConfig({
       action: 'Get started',
     },
     {
-      type: 'once' as const,
-      priceId: 'price_1234',
+      type: 'payment' as const,
+      priceId: 'price_1QxOkQE001hYiK5sRGoDswT3',
       title: 'One Time Sponsor',
       price: 10,
       description: 'Support the project by sponsoring it one time. This also showcases the flow for one time payments.',
@@ -53,7 +53,7 @@ export default defineAppConfig({
     },
     {
       type: 'subscription' as const,
-      priceId: 'price_1234',
+      priceId: 'price_1QxOl7E001hYiK5sxfAaqQTw',
       title: 'Monthly Sponsor',
       price: 5,
       description: 'Support the project by sponsoring it monthly. This also showcases the flow for monthly payments.',

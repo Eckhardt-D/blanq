@@ -8,6 +8,10 @@ import { ref } from 'vue'
 import { z } from 'zod'
 import FormFieldBase from './FormFieldBase.vue'
 
+const props = defineProps<{
+  next?: string
+}>()
+
 const userStore = useUserStore()
 const { toast } = useToast()
 const isLoading = ref(false)
@@ -26,7 +30,7 @@ const onSubmit = form.handleSubmit(async (details) => {
 
   try {
     // Causes a redirect if successful, subsequent code will not run reliably
-    await userStore.login(details)
+    await userStore.login(details, { next: props.next })
   }
 
   catch (err) {

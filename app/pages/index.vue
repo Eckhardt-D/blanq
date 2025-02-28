@@ -83,6 +83,7 @@ useSeoMeta({
           <ProductCard
             v-for="product in config.products"
             :key="product.title"
+            :active="false"
             :product="{
               ...product,
               actionUrl: '/app/settings/billing',
