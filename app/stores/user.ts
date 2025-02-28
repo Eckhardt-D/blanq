@@ -1,4 +1,4 @@
-import type { User } from '~~/server/database/schemas/users'
+import type { User } from '~~/lib/auth-client'
 import { useToast } from '@/components/ui/toast/use-toast'
 import { authClient } from '~~/lib/auth-client'
 
