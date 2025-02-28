@@ -38,6 +38,9 @@ export default defineNuxtConfig({
     componentDir: './app/components/ui',
   },
   routeRules: {
+    '/': {
+      prerender: true,
+    },
     '/app/settings': {
       redirect: '/app/settings/account',
     },

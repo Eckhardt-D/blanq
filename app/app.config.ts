@@ -17,7 +17,6 @@ export default defineAppConfig({
   },
   navigation: {
     landing: [
-      { title: 'How to', to: '/how-to' },
       { title: 'Features', to: '/#features' },
       { title: 'Pricing', to: '/#pricing' },
       { title: 'Documentation', to: '/documentation' },
