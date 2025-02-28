@@ -1,13 +1,16 @@
 export default defineEventHandler(async (event) => {
   const user = getUserOrThrow(event)
-  const config = useRuntimeConfig(event)
-  const stripe = useStripe(config.stripeSecretKey)
-  const subscriptions = await stripe.getUserSubscriptions({
-    user,
+  const db = useDrizzle()
+
+  const results = await db.query.subscriptions.findMany({
+    columns: { stripeMainPriceId: true },
+    where:
+      and(
+        eq(tables.subscriptions.userId, user.id),
+        eq(tables.subscriptions.status, 'active'),
+      ),
+    orderBy: desc(tables.subscriptions.createdAt),
   })
 
-  return subscriptions.reduce((acc, sub) => {
-    acc.push(...sub.items.data.map(item => item.price.id))
-    return acc
-  }, [] as string[])
+  return results.map(result => result.stripeMainPriceId)
 })
