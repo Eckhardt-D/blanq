@@ -5,11 +5,7 @@ const userStore = useUserStore()
 
 <template>
   <nav class="h-[var(--navbar-size)] flex items-center justify-between border-b px-3">
-    <NuxtLink to="/app">
-      <h3 class="text-lg font-semibold">
-        {{ config.appName }}
-      </h3>
-    </NuxtLink>
+    <AppBranding to="/app" />
 
     <div class="flex items-center space-x-3">
       <UiDropdownMenu>
