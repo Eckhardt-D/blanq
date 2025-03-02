@@ -16,6 +16,10 @@ You have it out of the box, ready to be tweaked for your needs.
 
 # Development
 
+Below are quick steps, but you can find the full documentation at:
+
+[Blanq Docs](https://blanq.kaizen.com.na)
+
 Clone the repo into your project folder (./my-app)
 
 ```bash

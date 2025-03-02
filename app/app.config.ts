@@ -19,7 +19,7 @@ export default defineAppConfig({
     landing: [
       { title: 'Features', to: '/#features' },
       { title: 'Pricing', to: '/#pricing' },
-      { title: 'Documentation', to: '/documentation' },
+      { title: 'Documentation', to: '/docs' },
       { title: 'Github', to: 'https://github.com/Eckhardt-D/blanq', target: '_blank' },
     ],
   },

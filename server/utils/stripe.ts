@@ -65,10 +65,77 @@ export function useStripe(secret: string) {
     return subscriptions.data
   }
 
+  async function decodeWebhook(request: Request, secret: string) {
+    const payload = await request.text()
+    const sig = request.headers.get('Stripe-Signature')!
+
+    try {
+      return stripe.webhooks.constructEvent(payload, sig, secret)
+    }
+    catch (err) {
+      console.error(err)
+      return null
+    }
+  }
+
+  /**
+   * Used to make sure the user's subscription is updated when they pay an invoice.
+   * It assumes the subscription already exists, if it does not then nothing happens
+   * as that indicates a race condition where the subscription has not been created in Checkout yet.
+   */
+  async function handleInvoicePaid(invoice: Stripe.Invoice) {
+    const db = useDrizzle()
+
+    for (let i = 0; i < invoice.lines.data.length; i++) {
+      const lineItem = invoice.lines.data[i]
+
+      if (
+        lineItem.type === 'subscription'
+        && typeof lineItem.subscription === 'string'
+      ) {
+        const priceId = lineItem.price?.id
+        const periodEnd = lineItem.period.end
+
+        if (!priceId) {
+          // TODO: better logging / tracing
+          console.error('No price ID found for subscription line item')
+          continue
+        }
+
+        await db.update(tables.subscriptions).set({
+          status: 'active',
+          currentPeriodEnd: new Date(periodEnd * 1000),
+        }).where(eq(tables.subscriptions.stripeSubscriptionId, lineItem.subscription))
+      }
+    }
+  }
+
+  async function handleSubscriptionDeleted(subscription: Stripe.Subscription) {
+    const db = useDrizzle()
+
+    await db.update(tables.subscriptions).set({
+      status: 'inactive',
+    }).where(eq(tables.subscriptions.stripeSubscriptionId, subscription.id))
+  }
+
+  async function handleSubscriptionCancelled(subscription: Stripe.Subscription) {
+    const db = useDrizzle()
+
+    await db.update(tables.subscriptions).set({
+      status: 'cancelled',
+      // Ensure that the correct cancellation date is set
+      currentPeriodEnd: new Date(subscription.current_period_end * 1000)
+    }).where(eq(tables.subscriptions.stripeSubscriptionId, subscription.id))
+  }
+
   return {
     createCheckoutSession,
     getCheckoutSessionById,
     createCustomerPortalSession,
     getUserSubscriptions,
+    decodeWebhook,
+    handleInvoicePaid,
+    handleSubscriptionDeleted,
+    handleSubscriptionCancelled,
   }
 }

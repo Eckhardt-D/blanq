@@ -13,12 +13,14 @@
     "db:generate": "drizzle-kit generate"
   },
   "dependencies": {
+    "@nuxt/content": "^3.2.2",
     "@nuxthub/core": "0.8.17",
     "@nuxtjs/color-mode": "3.5.2",
     "@nuxtjs/fontaine": "0.4.4",
     "@nuxtjs/google-fonts": "3.2.0",
     "@nuxtjs/tailwindcss": "6.13.1",
     "@pinia/nuxt": "0.10.1",
+    "@tailwindcss/typography": "^0.5.16",
     "@unovis/ts": "^1.5.1",
     "@unovis/vue": "^1.5.1",
     "@vee-validate/zod": "^4.15.0",

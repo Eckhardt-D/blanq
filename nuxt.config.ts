@@ -23,11 +23,24 @@ export default defineNuxtConfig({
     '@nuxtjs/google-fonts',
     '@nuxtjs/fontaine',
     '@nuxthub/core',
+    '@nuxt/content',
   ],
   hub: {
     database: true,
     cache: true,
     kv: true,
+  },
+  content: {
+    build: {
+      markdown: {
+        highlight: {
+          theme: {
+            default: 'github-light',
+            dark: 'github-dark',
+          },
+        },
+      },
+    },
   },
   colorMode: {
     storageKey: 'blanq-color-mode',
@@ -40,6 +53,9 @@ export default defineNuxtConfig({
   routeRules: {
     '/': {
       prerender: true,
+    },
+    '/docs': {
+      redirect: '/docs/getting-started',
     },
     '/app/settings': {
       redirect: '/app/settings/account',

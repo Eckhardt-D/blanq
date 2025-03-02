@@ -11,10 +11,7 @@ const session = authClient.useSession()
     <div class="container">
       <div class="py-5">
         <nav class="flex items-center justify-between border rounded-lg bg-white dark:bg-background p-3">
-          <NuxtLink class="flex items-center gap-2" to="/">
-            <Icon icon="radix-icons:crumpled-paper" class="w-6 h-6" />
-            <span class="font-bold text-xl">{{ config.appName }}</span>
-          </NuxtLink>
+          <AppBranding />
 
           <div>
             <ul class="flex items-center gap-10 font-medium text-sm">
