@@ -24,7 +24,12 @@ export default defineNuxtConfig({
     '@nuxtjs/fontaine',
     '@nuxthub/core',
     '@nuxt/content',
+    'nuxt-og-image',
   ],
+  site: {
+    url: import.meta.env.NUXT_PUBLIC_SITE_URL,
+    name: 'Blanq',
+  },
   hub: {
     database: true,
     cache: true,
@@ -79,3 +84,4 @@ export default defineNuxtConfig({
     },
   },
 })
+

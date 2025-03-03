@@ -11,6 +11,11 @@ useSeoMeta({
   title: config.seo.home.title,
   description: config.seo.home.description,
 })
+
+defineOgImageComponent('NuxtSeo', {
+  title: config.appName,
+  description: config.seo.home.title,
+})
 </script>
 
 <template>
