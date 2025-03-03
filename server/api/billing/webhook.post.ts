@@ -19,16 +19,20 @@ export default defineEventHandler(async (event) => {
         break
       }
       case 'customer.subscription.updated': {
-        if(result.data.object.cancel_at_period_end) {
+        if (result.data.object.cancel_at_period_end) {
           await stripe.handleSubscriptionCancelled(result.data.object)
+          break
         }
       }
     }
+
+    setResponseStatus(event, 200)
+    return 'ok'
   }
   catch (err) {
     // TODO: Better logging
     console.error(err)
     setResponseStatus(event, 500)
-    return 'Error handling webhook ' + (err as Error).message
+    return `Error handling webhook ${(err as Error).message}`
   }
 })
