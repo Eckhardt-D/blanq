@@ -15,21 +15,6 @@ const config = useAppConfig()
 const loadingPortal = ref(false)
 const userStore = useUserStore()
 
-const { data: subscriptions, refresh } = await useAsyncData('subscriptions', async () => {
-  return $fetch('/api/billing/subscriptions')
-})
-
-const localSubscriptionItems = config.products.map(p => p.priceId)
-const activeSubscriptions = computed(() => subscriptions.value?.filter(s => localSubscriptionItems.includes(s)) ?? [])
-
-onMounted(() => {
-  // Weird bug where the subscriptions endpoint returns
-  // undefined when navigating back from the portal/checkout page
-  if (subscriptions.value === undefined) {
-    refresh()
-  }
-})
-
 function openPortal() {
   loadingPortal.value = true
   window.location.href = '/api/billing/portal'
@@ -60,13 +45,17 @@ function openPortal() {
       <ProductCard
         v-for="product in config.products"
         :key="product.title"
-        :active="!!product.priceId && activeSubscriptions.includes(product.priceId)"
+        :active="!!product.priceId && !!userStore.user?.subscription.activeSubscriptionPlans.some(plan => plan.stripeMainPriceId === product.priceId)"
         :product="{
           ...product,
           actionUrl: product.priceId ? `/api/billing/checkout?priceId=${product.priceId}&type=${product.type}` : null,
           actionText: product.action,
         }"
       />
+    </div>
+
+    <div v-if="userStore.user?.subscription.cancelledSubscriptionPlans.length" class="py-4">
+      You have some <span class="font-bold">cancelled subscriptions</span> that will expire soon, open Portal below to manage them.
     </div>
 
     <UiSeparator class="my-5" />

@@ -1,9 +1,54 @@
 import type { H3Event } from 'h3'
 import { betterAuth } from 'better-auth'
 import { drizzleAdapter } from 'better-auth/adapters/drizzle'
+import { customSession } from 'better-auth/plugins'
+
+export interface SubscriptionInfo {
+  isSubscribed: boolean
+  activeSubscriptionPlans: {
+    stripeMainPriceId: string
+    currentPeriodEnd: Date
+    status: 'active'
+  }[]
+  cancelledSubscriptionPlans: {
+    stripeMainPriceId: string
+    currentPeriodEnd: Date
+    status: 'cancelled'
+  }[]
+}
 
 function createAuth() {
   return betterAuth({
+    plugins: [
+      customSession(async ({ user, session }) => {
+        const db = useDrizzle()
+        const subscriptions = await db.select({
+          stripeMainPriceId: tables.subscriptions.stripeMainPriceId,
+          currentPeriodEnd: tables.subscriptions.currentPeriodEnd,
+          status: tables.subscriptions.status,
+        }).from(tables.subscriptions).where(
+          and(
+            eq(tables.subscriptions.userId, user.id),
+            // Include cancelled subscriptions as they are still active until the end of the period
+            not(eq(tables.subscriptions.status, 'inactive')),
+          ),
+        )
+
+        const subscriptionInfo: SubscriptionInfo = {
+          isSubscribed: subscriptions.length > 0,
+          activeSubscriptionPlans: subscriptions.filter(sub => sub.status === 'active') as SubscriptionInfo['activeSubscriptionPlans'],
+          cancelledSubscriptionPlans: subscriptions.filter(sub => sub.status === 'cancelled') as SubscriptionInfo['cancelledSubscriptionPlans'],
+        }
+
+        return {
+          session,
+          user: {
+            ...user,
+            subscription: subscriptionInfo,
+          },
+        }
+      }),
+    ],
     user: {
       additionalFields: {
         stripeCustomerId: {
@@ -142,4 +187,6 @@ export function requireAuth(event: H3Event): void {
   }
 }
 
-export type User = typeof _auth.$Infer.Session.user
+export type User = typeof _auth.$Infer.Session.user & {
+  subscription: SubscriptionInfo
+}

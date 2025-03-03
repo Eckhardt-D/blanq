@@ -23,6 +23,7 @@ export default defineAppConfig({
       { title: 'Github', to: 'https://github.com/Eckhardt-D/blanq', target: '_blank' },
     ],
   },
+  subscriptionBadgeText: 'Pro+',
   products: [
     {
       type: 'subscription' as const,

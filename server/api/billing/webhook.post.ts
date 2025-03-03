@@ -23,6 +23,9 @@ export default defineEventHandler(async (event) => {
           await stripe.handleSubscriptionCancelled(result.data.object)
           break
         }
+        else {
+          await stripe.handleSubscriptionRenewed(result.data.object)
+        }
       }
     }
 

@@ -5,7 +5,12 @@ const userStore = useUserStore()
 
 <template>
   <nav class="h-[var(--navbar-size)] flex items-center justify-between border-b px-3">
-    <AppBranding to="/app" />
+    <div class="flex items-center gap-4">
+      <AppBranding to="/app" />
+      <UiBadge v-if="userStore.user?.subscription.isSubscribed">
+        {{ config.subscriptionBadgeText }}
+      </UiBadge>
+    </div>
 
     <div class="flex items-center space-x-3">
       <UiDropdownMenu>

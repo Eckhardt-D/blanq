@@ -124,7 +124,21 @@ export function useStripe(secret: string) {
     await db.update(tables.subscriptions).set({
       status: 'cancelled',
       // Ensure that the correct cancellation date is set
-      currentPeriodEnd: new Date(subscription.current_period_end * 1000)
+      currentPeriodEnd: new Date(subscription.current_period_end * 1000),
+    }).where(eq(tables.subscriptions.stripeSubscriptionId, subscription.id))
+  }
+
+  async function handleSubscriptionRenewed(subscription: Stripe.Subscription) {
+    if (subscription.status !== 'active') {
+      return
+    }
+
+    const db = useDrizzle()
+
+    await db.update(tables.subscriptions).set({
+      status: 'active',
+      // Ensure that the correct cancellation date is set
+      currentPeriodEnd: new Date(subscription.current_period_end * 1000),
     }).where(eq(tables.subscriptions.stripeSubscriptionId, subscription.id))
   }
 
@@ -137,5 +151,6 @@ export function useStripe(secret: string) {
     handleInvoicePaid,
     handleSubscriptionDeleted,
     handleSubscriptionCancelled,
+    handleSubscriptionRenewed,
   }
 }
