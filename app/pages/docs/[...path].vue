@@ -25,6 +25,11 @@ useSeoMeta({
   title: info.value?.page?.seo?.title || 'Blanq',
   description: info.value?.page?.seo?.description || 'Not Found',
 })
+
+defineOgImageComponent('NuxtSeo', {
+  title: info.value?.page?.seo?.title || 'Blanq',
+  description: info.value?.page?.seo?.description || 'Not Found',
+})
 </script>
 
 <template>
