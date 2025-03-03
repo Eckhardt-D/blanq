@@ -103,7 +103,7 @@ defineOgImageComponent('NuxtSeo', {
           What People are saying
         </h2>
 
-        <div class="h-[300px] mt-10">
+        <div class="min-h-[300px] mt-10">
           <UiCarousel
             class="w-full"
             :opts="{ align: 'start', loop: true, active: true }"
@@ -123,7 +123,7 @@ defineOgImageComponent('NuxtSeo', {
                 </div>
               </UiCarouselItem>
             </UiCarouselContent>
-            <UiCarouselNext />
+            <UiCarouselNext class="-right-2" />
           </UiCarousel>
         </div>
 
@@ -150,7 +150,7 @@ defineOgImageComponent('NuxtSeo', {
 
     <footer class="py-10 border-t">
       <div class="container">
-        <div class="flex items-end justify-between">
+        <div class="flex md:items-end justify-between">
           <div>
             <Icon icon="radix-icons:crumpled-paper" class="w-6 h-6 mb-6" />
 
@@ -160,7 +160,7 @@ defineOgImageComponent('NuxtSeo', {
           </div>
 
           <div>
-            <ul class="flex items-center gap-10 font-medium text-sm">
+            <ul class="flex flex-col md:flex-row md:items-center gap-10 font-medium text-sm">
               <NuxtLink v-for="item in config.navigation.landing" :key="item.title" :to="item.to">
                 <li>
                   {{ item.title }}
