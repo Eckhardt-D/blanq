@@ -4,6 +4,7 @@ import Toaster from '@/components/ui/toast/Toaster.vue'
 
 <template>
   <NuxtRouteAnnouncer />
+  <NuxtLoadingIndicator :height="10" :color="true" />
 
   <NuxtLayout>
     <NuxtPage />

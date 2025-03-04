@@ -7,6 +7,20 @@ interface LoginPayload {
   password: string
 }
 
+interface BaseSubscription {
+  stripeMainPriceId: string
+  currentPeriodEnd: Date
+}
+
+type ActiveSubscription = BaseSubscription & { status: 'active' }
+type CancelledSubscription = BaseSubscription & { status: 'cancelled' }
+
+interface SubscriptionInfo {
+  isSubscribed: boolean
+  activeSubscriptionPlans: ActiveSubscription[]
+  cancelledSubscriptionPlans: CancelledSubscription[]
+}
+
 interface RegisterPayload {
   fullname: string
   email: string
@@ -31,12 +45,54 @@ interface ChangePasswordPayload {
   newPasswordConfirm: string
 }
 
+type UserWithSubscriptionInfo = User & {
+  subscription?: SubscriptionInfo
+}
+
 export const useUserStore = defineStore('user', () => {
-  const user = ref<User | null>(null)
+  const user = ref<UserWithSubscriptionInfo | null>(null)
+  const subscriptionInfoLoaded = ref(false)
+  const userLastUpdated = ref(0)
+
   const { toast } = useToast()
 
   function setUser(newUser: User) {
+    userLastUpdated.value = Date.now()
     user.value = newUser
+  }
+
+  // When the client-side user becomes older than 1 hour
+  // force a refetch of the session, instead of on every route
+  // change.
+  function cachedSessionExpired() {
+    return Date.now() - userLastUpdated.value > 3600000
+  }
+
+  async function loadSubscriptionInfo() {
+    if (!user.value?.stripeCustomerId) {
+      subscriptionInfoLoaded.value = true
+      return
+    }
+
+    const response = await $fetch('/api/billing/subscription', {
+      headers: useRequestHeaders(),
+    })
+
+    user.value.subscription = {
+      isSubscribed: response.isSubscribed,
+      activeSubscriptionPlans: response.activeSubscriptionPlans.map(sub => ({
+        stripeMainPriceId: sub.stripeMainPriceId,
+        currentPeriodEnd: new Date(sub.currentPeriodEnd),
+        status: 'active',
+      })),
+      cancelledSubscriptionPlans: response.cancelledSubscriptionPlans.map(sub => ({
+        stripeMainPriceId: sub.stripeMainPriceId,
+        currentPeriodEnd: new Date(sub.currentPeriodEnd),
+        status: 'cancelled',
+      })),
+    }
+
+    subscriptionInfoLoaded.value = true
   }
 
   async function login(payload: LoginPayload, opts?: { next?: string }) {
@@ -213,6 +269,10 @@ export const useUserStore = defineStore('user', () => {
   return {
     user,
     setUser,
+    userLastUpdated,
+    cachedSessionExpired,
+    subscriptionInfoLoaded,
+    loadSubscriptionInfo,
     login,
     register,
     sendVerificationEmail,
