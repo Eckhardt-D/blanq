@@ -13,6 +13,11 @@ declare module 'h3' {
 }
 
 export default defineEventHandler(async (event) => {
+  // Skip authentication check during prerendering
+  if (import.meta.prerender) {
+    return
+  }
+
   const session = await serverAuth().api.getSession({
     headers: event.headers,
   })
@@ -20,7 +25,7 @@ export default defineEventHandler(async (event) => {
   if (session != null) {
     event.context.auth = {
       isAuthenticated: true,
-      user: session.user,
+      user: session.user as User,
     }
   }
   else {

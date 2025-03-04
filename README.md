@@ -35,12 +35,12 @@ cd ./my-app && git remote set-url origin <your-repo-url>
 Install all the dependencies
 
 ```bash
-bun install
+pnpm install
 ```
 
 > [!NOTE]
 > Currently some issues with native deps and cross-platform installs.
-> Remove `bun.lock` and node_modules and try again if you run into issues.
+> Remove `pnpm-lock.yaml` and node_modules and try again if you run into issues.
 
 Ensure you've copied and filled the necessary env vars from `.env.example` to `.env`.
 
@@ -73,5 +73,5 @@ docker run -d -p 8008:8008 mailchannels-dev
 This will automatically run the migrations for you if it's the first time you're running the app.
 
 ```bash
-bun run dev
+pnpm run dev
 ```

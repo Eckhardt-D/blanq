@@ -8,7 +8,7 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
     return navigateTo(`/auth/login${next ? `?next=${next}` : ''}`)
   }
 
-  useUserStore().setUser(session.value.user)
+  useUserStore().setUser(session.value.user as User)
 
   if (!session.value.user.emailVerified) {
     if (!to.path.startsWith('/auth/verify-email')) {
