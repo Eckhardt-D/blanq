@@ -45,7 +45,7 @@ function openPortal() {
       <ProductCard
         v-for="product in config.products"
         :key="product.title"
-        :active="!!product.priceId && !!userStore.user?.subscription.activeSubscriptionPlans.some(plan => plan.stripeMainPriceId === product.priceId)"
+        :active="!!product.priceId && !!userStore.user?.subscription?.activeSubscriptionPlans.some(plan => plan.stripeMainPriceId === product.priceId)"
         :product="{
           ...product,
           actionUrl: product.priceId ? `/api/billing/checkout?priceId=${product.priceId}&type=${product.type}` : null,
@@ -54,7 +54,7 @@ function openPortal() {
       />
     </div>
 
-    <div v-if="userStore.user?.subscription.cancelledSubscriptionPlans.length" class="py-4">
+    <div v-if="userStore.user?.subscription?.cancelledSubscriptionPlans.length" class="py-4">
       You have some <span class="font-bold">cancelled subscriptions</span> that will expire soon, open Portal below to manage them.
     </div>
 
