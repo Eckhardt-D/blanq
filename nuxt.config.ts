@@ -3,6 +3,15 @@ import vue from '@vitejs/plugin-vue'
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   compatibilityDate: '2024-11-01',
+  $production: {
+    app: {
+      head: {
+        script: [{
+          src: '/um.js',
+        }],
+      },
+    },
+  },
   future: {
     compatibilityVersion: 4,
   },

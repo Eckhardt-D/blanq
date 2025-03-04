@@ -40,7 +40,7 @@ export default defineAppConfig({
     },
     {
       type: 'payment' as const,
-      priceId: 'price_1QxOkQE001hYiK5sRGoDswT3',
+      priceId: 'price_1QyU7bE001hYiK5s16lpuKay',
       title: 'One Time Sponsor',
       price: 10,
       description: 'Support the project by sponsoring it one time. This also showcases the flow for one time payments.',
@@ -53,7 +53,7 @@ export default defineAppConfig({
     },
     {
       type: 'subscription' as const,
-      priceId: 'price_1QxOl7E001hYiK5sxfAaqQTw',
+      priceId: 'price_1QyU7TE001hYiK5sKE9i78Df',
       title: 'Monthly Sponsor',
       price: 5,
       description: 'Support the project by sponsoring it monthly. This also showcases the flow for monthly payments.',
