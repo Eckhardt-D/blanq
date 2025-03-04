@@ -2,6 +2,14 @@ export default defineEventHandler(async (event) => {
   const user = getUserOrThrow(event)
   const db = useDrizzle()
 
+  if (!user.stripeCustomerId) {
+    return {
+      isSubscribed: false,
+      activeSubscriptionPlans: [],
+      cancelledSubscriptionPlans: [],
+    }
+  }
+
   const subscriptionItems = await db.select()
     .from(tables.subscriptions)
     .where(
