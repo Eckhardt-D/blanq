@@ -12,7 +12,7 @@ const session = authClient.useSession()
         <nav class="flex items-center justify-between border rounded-lg bg-white dark:bg-background p-3">
           <AppBranding />
 
-          <div class="md:[hidden items-center]">
+          <div class="md:hidden md:items-center">
             <UiDropdownMenu>
               <UiDropdownMenuTrigger as-child>
                 <UiButton variant="ghost">
